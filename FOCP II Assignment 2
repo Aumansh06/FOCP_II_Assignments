@@ -1,0 +1,131 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+// Student Class
+class Student {
+private:
+    string name;
+    int rollNumber;
+    float CGPA;
+    vector<string> courses;
+
+public:
+    // Constructors
+    Student() {
+        name = "";
+        rollNumber = 0;
+        CGPA = 0.0;
+    }
+
+    Student(string n, int roll, float gpa) {
+        name = n;
+        rollNumber = roll;
+        CGPA = gpa;
+    }
+
+    // Copy Constructor
+    Student(const Student &s) {
+        name = s.name;
+        rollNumber = s.rollNumber;
+        CGPA = s.CGPA;
+        courses = s.courses;
+    }
+
+    // Destructor
+    ~Student() {
+        cout << "Destroying Student: " << name << endl;
+    }
+
+    // Add Course
+    void addCourse(string course) {
+        courses.push_back(course);
+    }
+
+    // Update CGPA
+    void updateCGPA(float gpa) {
+        if (gpa >= 0.0 && gpa <= 10.0) {
+            CGPA = gpa;
+        } else {
+            cout << "Invalid CGPA. Please enter a value between 0 and 10." << endl;
+        }
+    }
+
+    // Display Student Info
+    void displayInfo() {
+        cout << "Name: " << name << endl;
+        cout << "Roll Number: " << rollNumber << endl;
+        cout << "CGPA: " << CGPA << endl;
+        cout << "Courses: ";
+        for (int i = 0; i < courses.size(); i++) {
+            cout << courses[i] << " ";
+        }
+        cout << endl;
+    }
+
+    int getRollNumber() {
+        return rollNumber;
+    }
+};
+
+// Student Management System
+class StudentManagementSystem {
+private:
+    vector<Student> students;
+
+public:
+    // Add Student
+    void addStudent(Student s) {
+        students.push_back(s);
+    }
+
+    // Search Student by Roll Number
+    void searchStudent(int roll) {
+        for (int i = 0; i < students.size(); i++) {
+            if (students[i].getRollNumber() == roll) {
+                students[i].displayInfo();
+                return;
+            }
+        }
+        cout << "Student not found!" << endl;
+    }
+
+    // Display All Students
+    void displayAllStudents() {
+        for (int i = 0; i < students.size(); i++) {
+            students[i].displayInfo();
+            cout << "-------------------------" << endl;
+        }
+    }
+};
+
+int main() {
+    StudentManagementSystem sms;
+
+    // Create Students
+    Student s1("Alice", 101, 8.2);
+    s1.addCourse("Math");
+    s1.addCourse("Physics");
+
+    Student s2("Bob", 102, 9.1);
+    s2.addCourse("Chemistry");
+    s2.addCourse("Biology");
+
+    // Add Students to the System
+    sms.addStudent(s1);
+    sms.addStudent(s2);
+
+    // Display All Students
+    sms.displayAllStudents();
+
+    // Search for a Student
+    cout << "\nSearching for Roll Number 101:" << endl;
+    sms.searchStudent(101);
+
+    // Update CGPA of a Student
+    cout << "\nUpdating CGPA of Alice:" << endl;
+    s1.updateCGPA(9.0);
+
+    return 0;
+}
